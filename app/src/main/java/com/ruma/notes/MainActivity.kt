@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.data.entity.Note
 import com.ruma.notes.databinding.ActivityMainBinding
 import com.ruma.notes.ui.NoteAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
