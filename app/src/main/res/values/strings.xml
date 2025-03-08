@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">NotesApp</string>
-    <string name="add_new_note">Add new note</string>
-    <string name="title">Title</string>
-    <string name="options">Options</string>
+    <string name="app_name">Notas</string>
+
+    <string name="folders">Carpetas</string>
+    <string name="title">Título</string>
+    <string name="add_new_note">Añadir nota</string>
+    <string name="options">Opciones</string>
     <string name="delete">Eliminar</string>
+    <string name="create_folder">Crear carpeta</string>
+
 </resources>

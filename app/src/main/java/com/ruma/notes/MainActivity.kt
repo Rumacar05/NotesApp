@@ -2,8 +2,10 @@ package com.ruma.notes
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -50,10 +52,26 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.ivOptions.setOnClickListener { view -> showPopUpMenu(view) }
+
         adapter = NoteAdapter(notes) {id -> navigateToNote(id)}
         binding.rvNotes.setHasFixedSize(true)
         binding.rvNotes.layoutManager = GridLayoutManager(this, 2)
         binding.rvNotes.adapter = adapter
+    }
+
+    private fun showPopUpMenu(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        val inflater = popupMenu.menuInflater
+        inflater.inflate(R.menu.menu_folder, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                else -> false
+            }
+        }
+
+        popupMenu.show()
     }
 
     private fun navigateToNote(id: Long) {
