@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ruma.notes.R
 import com.ruma.notes.data.entity.Note
 
-class NoteAdapter(private var noteList: List<Note> = emptyList()) :
+class NoteAdapter(private var noteList: List<Note> = emptyList(), private val onItemSelected: (Long)-> Unit) :
     RecyclerView.Adapter<NoteViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(
@@ -15,7 +15,7 @@ class NoteAdapter(private var noteList: List<Note> = emptyList()) :
     }
 
     override fun onBindViewHolder(viewHolder: NoteViewHolder, position: Int) {
-        viewHolder.bind(noteList[position])
+        viewHolder.bind(noteList[position], onItemSelected)
     }
 
     override fun getItemCount(): Int = noteList.size

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">NotesApp</string>
     <string name="add_new_note">Add new note</string>
+    <string name="title">Title</string>
+    <string name="options">Options</string>
+    <string name="delete">Eliminar</string>
 </resources>

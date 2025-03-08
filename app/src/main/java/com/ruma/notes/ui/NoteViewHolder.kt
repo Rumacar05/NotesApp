@@ -9,8 +9,10 @@ class NoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemNoteBinding.bind(view)
 
-    fun bind(note: Note) {
+    fun bind(note: Note, onItemSelected: (Long) -> Unit) {
         binding.tvTitle.text = note.title
         binding.tvContent.text = note.content
+
+        itemView.setOnClickListener { onItemSelected(note.id) }
     }
 }

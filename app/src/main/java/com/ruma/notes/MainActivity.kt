@@ -1,5 +1,6 @@
 package com.ruma.notes
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.data.entity.Note
 import com.ruma.notes.databinding.ActivityMainBinding
 import com.ruma.notes.ui.NoteAdapter
+import com.ruma.notes.ui.NoteEditActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,11 +19,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: NoteAdapter
 
+    companion object {
+        const val NOTE_ID = "note_id"
+    }
+
     private val notes = listOf(
-        Note("Test", "Test"),
-        Note("Test 2", "Test"),
-        Note("Test 3", "Test"),
-        Note("Test 4", "Test"),
+        Note(1, "Test", "Test"),
+        Note(2, "Test 2", "Test"),
+        Note(3, "Test 3", "Test"),
+        Note(4, "Test 4", "Test"),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +45,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
-        adapter = NoteAdapter(notes)
+        binding.fabAdd.setOnClickListener {
+            val intent = Intent(this, NoteEditActivity::class.java)
+            startActivity(intent)
+        }
+
+        adapter = NoteAdapter(notes) {id -> navigateToNote(id)}
         binding.rvNotes.setHasFixedSize(true)
         binding.rvNotes.layoutManager = GridLayoutManager(this, 2)
         binding.rvNotes.adapter = adapter
+    }
+
+    private fun navigateToNote(id: Long) {
+        val intent = Intent(this, NoteEditActivity::class.java)
+        intent.putExtra(NOTE_ID, id)
+        startActivity(intent)
     }
 }
