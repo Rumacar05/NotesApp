@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -36,8 +37,8 @@ android {
         jvmTarget = "1.8"
     }
 
-    viewBinding {
-        enable = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -52,10 +53,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Dagger Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-}
 
-kapt {
-    correctErrorTypes = true
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }
