@@ -7,5 +7,6 @@
     <string name="options">Opciones</string>
     <string name="delete">Eliminar</string>
     <string name="create_folder">Crear carpeta</string>
+    <string name="go_back">Go back</string>
 
 </resources>
