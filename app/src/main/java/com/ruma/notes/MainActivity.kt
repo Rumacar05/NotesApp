@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.data.entity.Note
 import com.ruma.notes.databinding.ActivityMainBinding
-import com.ruma.notes.ui.NoteAdapter
+import com.ruma.notes.ui.adapter.NoteAdapter
 import com.ruma.notes.ui.NoteEditActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: NoteAdapter
+    private lateinit var noteAdapter: NoteAdapter
 
     companion object {
         const val NOTE_ID = "note_id"
@@ -47,17 +47,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        initList()
+        initListeners()
+    }
+
+    private fun initList() {
+        noteAdapter = NoteAdapter(notes) {id -> navigateToNote(id)}
+        binding.rvNotes.apply {
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = noteAdapter
+        }
+    }
+
+    private fun initListeners() {
         binding.fabAdd.setOnClickListener {
             val intent = Intent(this, NoteEditActivity::class.java)
             startActivity(intent)
         }
 
         binding.ivOptions.setOnClickListener { view -> showPopUpMenu(view) }
-
-        adapter = NoteAdapter(notes) {id -> navigateToNote(id)}
-        binding.rvNotes.setHasFixedSize(true)
-        binding.rvNotes.layoutManager = GridLayoutManager(this, 2)
-        binding.rvNotes.adapter = adapter
     }
 
     private fun showPopUpMenu(view: View) {
@@ -74,9 +83,9 @@ class MainActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
-    private fun navigateToNote(id: Long) {
+    private fun navigateToNote(note: Note) {
         val intent = Intent(this, NoteEditActivity::class.java)
-        intent.putExtra(NOTE_ID, id)
+        intent.putExtra(NOTE_ID, note.id)
         startActivity(intent)
     }
 }

@@ -36,6 +36,10 @@ class NoteEditActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        initListeners()
+    }
+
+    private fun initListeners() {
         binding.ivGoBack.setOnClickListener { finish() }
         binding.ivOptions.setOnClickListener { view -> showPopUpMenu(view) }
     }
