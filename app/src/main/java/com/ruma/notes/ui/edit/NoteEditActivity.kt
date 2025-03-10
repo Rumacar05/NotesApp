@@ -1,23 +1,29 @@
 package com.ruma.notes.ui.edit
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.ruma.notes.ui.home.MainActivity
 import com.ruma.notes.R
 import com.ruma.notes.databinding.ActivityNoteEditBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NoteEditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNoteEditBinding
     private var currentId: Long = 0
+    private var parentId: Long? = null
+    private val viewModel: NoteEditViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +43,40 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun initUI() {
         initListeners()
+
+        if (currentId != 0L) {
+            viewModel.loadNoteByID(currentId)
+        }
+        observeViewModel()
     }
 
     private fun initListeners() {
         binding.ivGoBack.setOnClickListener { finish() }
         binding.ivOptions.setOnClickListener { view -> showPopUpMenu(view) }
+        binding.btnSave.setOnClickListener { saveNote() }
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.note.collect { note ->
+                if (note != null) {
+                    binding.etTitle.setText(note.title)
+                    binding.etContent.setText(note.content)
+                }
+            }
+        }
+    }
+
+    private fun saveNote() {
+        val title = binding.etTitle.text.toString()
+        val content = binding.etContent.text.toString()
+
+        if (title.isNotEmpty() && content.isNotEmpty()) {
+            viewModel.saveNote(title, content, parentId)
+            Toast.makeText(this, "Nota guardada", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Tienes que poner titulo y contenido", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showPopUpMenu(view: View) {
