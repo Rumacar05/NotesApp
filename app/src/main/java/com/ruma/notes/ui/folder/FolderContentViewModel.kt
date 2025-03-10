@@ -36,4 +36,23 @@ class FolderContentViewModel @Inject constructor(private val repository: NotesRe
             folder.parentFolderId?.let { loadFolder(it) }
         }
     }
+
+    fun updateFolder(folderName: String) {
+        viewModelScope.launch {
+            val folder = _currentFolder.value
+            if (folder != null && folder.name != folderName) {
+                val updateFolder = folder.copy(name = folderName)
+                repository.updateFolder(updateFolder)
+            }
+        }
+    }
+
+    fun deleteFolder() {
+        viewModelScope.launch {
+            val folder = _currentFolder.value
+            if (folder != null) {
+                repository.deleteFolder(folder)
+            }
+        }
+    }
 }

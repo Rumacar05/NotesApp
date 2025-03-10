@@ -2,6 +2,9 @@ package com.ruma.notes.ui.folder
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -13,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -52,7 +56,7 @@ class FolderContentActivity : AppCompatActivity() {
             insets
         }
 
-        folderId = intent.getLongExtra(MainActivity.FOLDER_ID, 0L)
+        folderId = intent.getLongExtra(FOLDER_ID, 0L)
         if (folderId == 0L) {
             finish()
             return
@@ -69,12 +73,12 @@ class FolderContentActivity : AppCompatActivity() {
 
     private fun initUIState() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.loadFolder(folderId)
 
                 launch {
                     viewModel.currentFolder.collect {
-                        binding.tvCategoryName.text = it?.name
+                        binding.etFolderName.setText(it?.name)
                     }
                 }
 
@@ -114,10 +118,33 @@ class FolderContentActivity : AppCompatActivity() {
 
         binding.fabAdd.setOnClickListener {
             val intent = Intent(this, NoteEditActivity::class.java)
+            intent.putExtra(FOLDER_ID, folderId)
             startActivity(intent)
         }
 
         binding.ivOptions.setOnClickListener { view -> showPopUpMenu(view) }
+
+        val handler = Handler(Looper.getMainLooper())
+        val delayMillis = 1000L
+
+        binding.etFolderName.addTextChangedListener (afterTextChanged = {s ->
+            handler.removeCallbacksAndMessages(null)
+            handler.postDelayed({
+                viewModel.updateFolder(s.toString())
+            }, delayMillis)
+        })
+    }
+
+    private fun navigateToFolder(id: Long) {
+        val intent = Intent(this, FolderContentActivity::class.java)
+        intent.putExtra(FOLDER_ID, id)
+        startActivity(intent)
+    }
+
+    private fun navigateToNote(id: Long) {
+        val intent = Intent(this, NoteEditActivity::class.java)
+        intent.putExtra(NOTE_ID, id)
+        startActivity(intent)
     }
 
     private fun showPopUpMenu(view: View) {
@@ -131,6 +158,11 @@ class FolderContentActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.action_create_folder -> {
                     showCreateFolderDialog()
+                    true
+                }
+
+                R.id.action_delete_folder -> {
+                    showDeleteFolderDialog()
                     true
                 }
 
@@ -148,7 +180,7 @@ class FolderContentActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setTitle("Crear carpeta")
             .setView(dialogView)
-            .setNeutralButton("Crear") { dialog, which ->
+            .setNeutralButton("Crear") { _, _ ->
                 val folderName = etFolderName.text.toString()
 
                 if (folderName.isNotEmpty()) {
@@ -166,21 +198,24 @@ class FolderContentActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    private fun showDeleteFolderDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Confirmación")
+            .setMessage("¿Estas seguro de borrar la carpeta ${binding.etFolderName.text}?")
+            .setNeutralButton("Borrar") { _, _ ->
+                viewModel.deleteFolder()
+                finish()
+                Toast.makeText(this, "Se ha borrado la carpeta correctamente", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            .setPositiveButton("Cancelar", null)
+
+        dialog.show()
+    }
+
     private fun createFolder(folderName: String) {
         val folder = FolderEntity(name = folderName, parentFolderId = folderId)
         viewModel.insertFolder(folder)
         Toast.makeText(this, "Carpeta creada: $folderName", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun navigateToFolder(id: Long) {
-        val intent = Intent(this, FolderContentActivity::class.java)
-        intent.putExtra(FOLDER_ID, id)
-        startActivity(intent)
-    }
-
-    private fun navigateToNote(id: Long) {
-        val intent = Intent(this, NoteEditActivity::class.java)
-        intent.putExtra(NOTE_ID, id)
-        startActivity(intent)
     }
 }

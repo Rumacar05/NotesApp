@@ -25,11 +25,15 @@
             android:contentDescription="@string/go_back"
             android:src="@drawable/ic_back_arrow" />
 
-        <TextView
-            android:id="@+id/tvCategoryName"
+        <EditText
+            android:id="@+id/etFolderName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:autofillHints=""
+            android:background="@android:color/transparent"
+            android:hint="@string/folder"
+            android:inputType="text"
             android:textSize="28sp"
             tools:text="@string/folders" />
 
