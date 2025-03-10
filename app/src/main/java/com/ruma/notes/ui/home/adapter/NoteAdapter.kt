@@ -1,15 +1,18 @@
-package com.ruma.notes.ui.edit.adapter
+package com.ruma.notes.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entity.Note
+import com.ruma.notes.data.database.entity.NoteEntity
 
-class NoteAdapter(private var noteList: List<Note> = emptyList(), private val onItemSelected: (Note)-> Unit) :
+class NoteAdapter(
+    private var noteList: List<NoteEntity> = emptyList(),
+    private val onItemSelected: (Long) -> Unit
+) :
     RecyclerView.Adapter<NoteViewHolder>() {
 
-    fun updateList(list: List<Note>) {
+    fun updateList(list: List<NoteEntity>) {
         noteList = list
         notifyDataSetChanged()
     }

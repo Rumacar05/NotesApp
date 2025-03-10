@@ -4,20 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entity.Note
 import com.ruma.notes.databinding.ActivityMainBinding
-import com.ruma.notes.ui.edit.adapter.NoteAdapter
 import com.ruma.notes.ui.edit.NoteEditActivity
+import com.ruma.notes.ui.home.adapter.NoteAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var noteAdapter: NoteAdapter
@@ -25,13 +31,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val NOTE_ID = "note_id"
     }
-
-    private val notes = listOf(
-        Note(1, "Test", "Test", 0),
-        Note(2, "Test 2", "Test", 0),
-        Note(3, "Test 3", "Test", 0),
-        Note(4, "Test 4", "Test", 0),
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,12 +47,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUI() {
+        initUIState()
         initList()
         initListeners()
     }
 
+    private fun initUIState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.loadNotesAndFolders()
+                viewModel.notes.collect {
+                    noteAdapter.updateList(it)
+                }
+            }
+        }
+    }
+
     private fun initList() {
-        noteAdapter = NoteAdapter(notes) {id -> navigateToNote(id)}
+        noteAdapter = NoteAdapter {id -> navigateToNote(id)}
         binding.rvNotes.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(context, 2)
@@ -84,9 +95,9 @@ class MainActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
-    private fun navigateToNote(note: Note) {
+    private fun navigateToNote(id: Long) {
         val intent = Intent(this, NoteEditActivity::class.java)
-        intent.putExtra(NOTE_ID, note.id)
+        intent.putExtra(NOTE_ID, id)
         startActivity(intent)
     }
 }
