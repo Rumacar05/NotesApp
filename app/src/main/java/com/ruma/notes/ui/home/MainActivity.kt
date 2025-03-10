@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.R
 import com.ruma.notes.databinding.ActivityMainBinding
 import com.ruma.notes.ui.edit.NoteEditActivity
-import com.ruma.notes.ui.home.adapter.NoteAdapter
+import com.ruma.notes.ui.adapter.FolderAdapter
+import com.ruma.notes.ui.adapter.NoteAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var noteAdapter: NoteAdapter
+    private lateinit var folderAdapter: FolderAdapter
 
     companion object {
         const val NOTE_ID = "note_id"
@@ -56,14 +58,30 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.loadNotesAndFolders()
-                viewModel.notes.collect {
-                    noteAdapter.updateList(it)
+
+                launch {
+                    viewModel.folders.collect{
+                        folderAdapter.updateList(it)
+                    }
+                }
+
+                launch {
+                    viewModel.notes.collect {
+                        noteAdapter.updateList(it)
+                    }
                 }
             }
         }
     }
 
     private fun initList() {
+        folderAdapter = FolderAdapter()
+        binding.rvFolders.apply {
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = folderAdapter
+        }
+
         noteAdapter = NoteAdapter {id -> navigateToNote(id)}
         binding.rvNotes.apply {
             setHasFixedSize(true)

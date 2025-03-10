@@ -1,4 +1,4 @@
-package com.ruma.notes.ui.home.adapter
+package com.ruma.notes.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
