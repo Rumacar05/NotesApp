@@ -29,4 +29,11 @@ class FolderContentViewModel @Inject constructor(private val repository: NotesRe
             _notes.value = repository.getNotesByFolderId(folderId)
         }
     }
+
+    fun insertFolder(folder: FolderEntity) {
+        viewModelScope.launch {
+            repository.insertFolder(folder)
+            folder.parentFolderId?.let { loadFolder(it) }
+        }
+    }
 }

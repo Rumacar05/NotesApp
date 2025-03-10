@@ -7,20 +7,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.folder.FolderContentActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center_vertical"
+        android:paddingVertical="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tvCategoryName"
+        <ImageView
+            android:id="@+id/ivGoBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/go_back"
+            android:src="@drawable/ic_back_arrow" />
+
+        <TextView
+            android:id="@+id/tvCategoryName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="28sp"
             tools:text="@string/folders" />
 
@@ -32,7 +41,7 @@
             android:contentDescription="@string/options"
             android:src="@drawable/ic_more_vert" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFolders"

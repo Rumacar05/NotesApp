@@ -14,6 +14,7 @@ class FolderAdapter(
 
     fun updateList(list: List<FolderEntity>) {
         folderList = list
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {

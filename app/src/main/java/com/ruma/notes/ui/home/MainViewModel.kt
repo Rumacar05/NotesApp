@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: NotesRepository): ViewModel() {
+class MainViewModel @Inject constructor(private val repository: NotesRepository) : ViewModel() {
     private var _folders = MutableStateFlow<List<FolderEntity>>(emptyList())
     val folders: StateFlow<List<FolderEntity>> = _folders
 
@@ -27,6 +27,13 @@ class MainViewModel @Inject constructor(private val repository: NotesRepository)
         viewModelScope.launch {
             _folders.value = repository.getRootFolders()
             _notes.value = repository.getRootNotes()
+        }
+    }
+
+    fun insertFolder(folder: FolderEntity) {
+        viewModelScope.launch {
+            repository.insertFolder(folder)
+            loadNotesAndFolders()
         }
     }
 }
