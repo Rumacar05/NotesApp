@@ -9,5 +9,8 @@
     <string name="create_folder">Crear carpeta</string>
     <string name="go_back">Go back</string>
     <string name="save">Guardar</string>
+    <string name="delete_folder">Eliminar carpeta</string>
+    <string name="folder_name">Nombre de la carpeta</string>
+    <string name="new_folder">Nueva carpeta</string>
 
 </resources>

@@ -23,6 +23,7 @@ class NoteEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteEditBinding
     private var currentId: Long = 0
     private var parentId: Long? = null
+
     private val viewModel: NoteEditViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ruma.notes.R
 import com.ruma.notes.data.database.entity.FolderEntity
 
-class FolderAdapter(private var folderList: List<FolderEntity> = emptyList()) :
+class FolderAdapter(
+    private var folderList: List<FolderEntity> = emptyList(),
+    private val onItemSelected: (Long) -> Unit
+) :
     RecyclerView.Adapter<FolderViewHolder>() {
 
     fun updateList(list: List<FolderEntity>) {
@@ -20,7 +23,7 @@ class FolderAdapter(private var folderList: List<FolderEntity> = emptyList()) :
     }
 
     override fun onBindViewHolder(holder: FolderViewHolder, position: Int) {
-        holder.render(folderList[position])
+        holder.render(folderList[position], onItemSelected)
     }
 
     override fun getItemCount() = folderList.size

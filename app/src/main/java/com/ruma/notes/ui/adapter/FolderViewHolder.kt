@@ -9,7 +9,8 @@ class FolderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemFolderBinding.bind(view)
 
-    fun render(folder: FolderEntity) {
-        binding.tvName.setText(folder.name)
+    fun render(folder: FolderEntity, onItemSelected: (Long) -> Unit) {
+        binding.tvName.text = folder.name
+        binding.main.setOnClickListener { onItemSelected(folder.id) }
     }
 }

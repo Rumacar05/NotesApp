@@ -1,4 +1,4 @@
-package com.ruma.notes.ui.home
+package com.ruma.notes.ui.folder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,26 +7,26 @@ import com.ruma.notes.data.database.entity.FolderEntity
 import com.ruma.notes.data.database.entity.NoteEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: NotesRepository): ViewModel() {
+class FolderContentViewModel @Inject constructor(private val repository: NotesRepository) :
+    ViewModel() {
+    private var _currentFolder = MutableStateFlow<FolderEntity?>(null)
+    val currentFolder = _currentFolder
+
     private var _folders = MutableStateFlow<List<FolderEntity>>(emptyList())
-    val folders: StateFlow<List<FolderEntity>> = _folders
+    val folder = _folders
 
     private var _notes = MutableStateFlow<List<NoteEntity>>(emptyList())
-    val notes: StateFlow<List<NoteEntity>> = _notes
+    val notes = _notes
 
-    init {
-        loadNotesAndFolders()
-    }
-
-    fun loadNotesAndFolders() {
+    fun loadFolder(folderId: Long) {
         viewModelScope.launch {
-            _folders.value = repository.getRootFolders()
-            _notes.value = repository.getRootNotes()
+            _currentFolder.value = repository.getFolderById(folderId)
+            _folders.value = repository.getFoldersByParentId(folderId)
+            _notes.value = repository.getNotesByFolderId(folderId)
         }
     }
 }

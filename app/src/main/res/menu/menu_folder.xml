@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_create_folder" android:title="@string/create_folder" />
+    <item android:id="@+id/action_delete_folder" android:visible="false" android:title="@string/delete_folder" />
 </menu>

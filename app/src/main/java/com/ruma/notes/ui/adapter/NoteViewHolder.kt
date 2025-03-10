@@ -13,6 +13,6 @@ class NoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         binding.tvTitle.text = note.title
         binding.tvContent.text = note.content
 
-        itemView.setOnClickListener { onItemSelected(note.id) }
+        binding.main.setOnClickListener { onItemSelected(note.id) }
     }
 }
