@@ -24,7 +24,7 @@ class NoteEditViewModel @Inject constructor(private val repository: NotesReposit
     fun saveNote(title: String, content: String, folderId: Long? = null) {
         viewModelScope.launch {
             val currentNote = _note.value
-            val note = currentNote?.copy(title = title, content = content, folderId = folderId)
+            val note = currentNote?.copy(title = title, content = content)
                 ?: NoteEntity(
                     title = title,
                     content = content,

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
@@ -38,6 +39,7 @@ class NoteEditActivity : AppCompatActivity() {
         }
 
         currentId = intent.getLongExtra(MainActivity.NOTE_ID, 0)
+        parentId = intent.extras?.getLong(MainActivity.FOLDER_ID);
 
         initUI()
     }
@@ -72,11 +74,11 @@ class NoteEditActivity : AppCompatActivity() {
         val title = binding.etTitle.text.toString()
         val content = binding.etContent.text.toString()
 
-        if (title.isNotEmpty() && content.isNotEmpty()) {
+        if (title.isNotEmpty() || content.isNotEmpty()) {
             viewModel.saveNote(title, content, parentId)
             Toast.makeText(this, "Nota guardada", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "Tienes que poner titulo y contenido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Tienes que poner titulo o contenido", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -88,7 +90,7 @@ class NoteEditActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_delete -> {
-                    Toast.makeText(this, "Se ha eliminado la nota", Toast.LENGTH_SHORT).show()
+                    showDeleteNoteDialog()
                     true
                 }
 
@@ -97,5 +99,20 @@ class NoteEditActivity : AppCompatActivity() {
         }
 
         popupMenu.show()
+    }
+
+    private fun showDeleteNoteDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Confirmación")
+            .setMessage("¿Estas seguro de borrar la nota ${binding.etTitle.text}?")
+            .setNeutralButton("Borrar") { _, _ ->
+                viewModel.deleteNote()
+                finish()
+                Toast.makeText(this, "Se ha borrado la nota correctamente", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            .setPositiveButton("Cancelar", null)
+
+        dialog.show()
     }
 }
