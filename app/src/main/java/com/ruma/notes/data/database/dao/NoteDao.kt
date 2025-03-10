@@ -15,12 +15,12 @@ interface NoteDao {
     @Delete
     suspend fun delete(note: NoteEntity)
 
-    @Query("SELECT * FROM notes WHERE id = :noteId")
+    @Query("SELECT * FROM note_table WHERE id = :noteId")
     suspend fun getNoteById(noteId: Long): NoteEntity?
 
-    @Query("SELECT * FROM notes WHERE folderId IS NULL")
+    @Query("SELECT * FROM note_table WHERE folderId IS NULL")
     suspend fun getRootNotes() : List<NoteEntity>
 
-    @Query("SELECT * FROM notes WHERE folderId = :folderId")
+    @Query("SELECT * FROM note_table WHERE folderId = :folderId")
     suspend fun getNotesByFolderId(folderId: Long): List<NoteEntity>
 }

@@ -5,7 +5,16 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "folders")
+@Entity(
+    tableName = "folder_table", foreignKeys = [
+        ForeignKey(
+            entity = FolderEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["parentFolderId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class FolderEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id") val id: Long = 0,

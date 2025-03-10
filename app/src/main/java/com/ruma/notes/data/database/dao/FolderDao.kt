@@ -15,12 +15,12 @@ interface FolderDao {
     @Delete
     suspend fun delete(folder: FolderEntity)
 
-    @Query("SELECT * FROM folders WHERE parentFolderId IS NULL")
+    @Query("SELECT * FROM folder_table WHERE parentFolderId IS NULL")
     suspend fun getRootFolders() : List<FolderEntity>
 
-    @Query("SELECT * FROM folders WHERE id = :folderId")
+    @Query("SELECT * FROM folder_table WHERE id = :folderId")
     suspend fun getFolderById(folderId: Long): FolderEntity?
 
-    @Query("SELECT * FROM folders WHERE parentFolderId = :parentFolderId")
+    @Query("SELECT * FROM folder_table WHERE parentFolderId = :parentFolderId")
     suspend fun getFolderByParentId(parentFolderId: Long): List<FolderEntity>
 }
