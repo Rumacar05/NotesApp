@@ -1,4 +1,4 @@
-package com.ruma.notes
+package com.ruma.notes.ui.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,10 +9,11 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ruma.notes.data.entity.Note
+import com.ruma.notes.R
+import com.ruma.notes.data.database.entity.Note
 import com.ruma.notes.databinding.ActivityMainBinding
-import com.ruma.notes.ui.adapter.NoteAdapter
-import com.ruma.notes.ui.NoteEditActivity
+import com.ruma.notes.ui.edit.adapter.NoteAdapter
+import com.ruma.notes.ui.edit.NoteEditActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,10 +27,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val notes = listOf(
-        Note(1, "Test", "Test"),
-        Note(2, "Test 2", "Test"),
-        Note(3, "Test 3", "Test"),
-        Note(4, "Test 4", "Test"),
+        Note(1, "Test", "Test", 0),
+        Note(2, "Test 2", "Test", 0),
+        Note(3, "Test 3", "Test", 0),
+        Note(4, "Test 4", "Test", 0),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

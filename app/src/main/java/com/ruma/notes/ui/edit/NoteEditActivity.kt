@@ -1,4 +1,4 @@
-package com.ruma.notes.ui
+package com.ruma.notes.ui.edit
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.ruma.notes.MainActivity
+import com.ruma.notes.ui.home.MainActivity
 import com.ruma.notes.R
 import com.ruma.notes.databinding.ActivityNoteEditBinding
 import dagger.hilt.android.AndroidEntryPoint

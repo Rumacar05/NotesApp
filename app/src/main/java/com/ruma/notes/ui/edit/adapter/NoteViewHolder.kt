@@ -1,8 +1,8 @@
-package com.ruma.notes.ui.adapter
+package com.ruma.notes.ui.edit.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.ruma.notes.data.entity.Note
+import com.ruma.notes.data.database.entity.Note
 import com.ruma.notes.databinding.ItemNoteBinding
 
 class NoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
