@@ -20,6 +20,7 @@ class NotesRepository @Inject constructor(
         noteDao.getNotesByFolderId(folderId)
 
     suspend fun insertFolder(folder: FolderEntity) = folderDao.insert(folder)
+    suspend fun updateFolder(folder: FolderEntity) = folderDao.update(folder)
     suspend fun deleteFolder(folder: FolderEntity) = folderDao.delete(folder)
     suspend fun getNoteById(noteId: Long) = noteDao.getNoteById(noteId)
     suspend fun insertNote(note: NoteEntity) = noteDao.insert(note)

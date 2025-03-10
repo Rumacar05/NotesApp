@@ -2,7 +2,7 @@ package com.ruma.notes.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ruma.notes.data.database.AppDatabase
+import com.ruma.notes.data.database.db.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
