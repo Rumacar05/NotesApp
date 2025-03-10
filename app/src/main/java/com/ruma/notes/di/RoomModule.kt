@@ -2,8 +2,6 @@ package com.ruma.notes.di
 
 import android.content.Context
 import androidx.room.Room
-import com.ruma.notes.data.database.dao.FolderDao
-import com.ruma.notes.data.database.dao.NoteDao
 import com.ruma.notes.data.database.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -16,23 +14,23 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
+    private const val NOTES_DATABASE_NAME = "notes_db"
+
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-            context.applicationContext,
+            context,
             AppDatabase::class.java,
-            "notes_db"
+            NOTES_DATABASE_NAME
         ).build()
     }
 
     @Provides
-    fun providesFolderDao(database: AppDatabase) : FolderDao {
-        return database.folderDao()
-    }
+    @Singleton
+    fun providesFolderDao(database: AppDatabase) = database.folderDao()
 
     @Provides
-    fun providesNoteDao(database: AppDatabase): NoteDao {
-        return database.noteDao()
-    }
+    @Singleton
+    fun providesNoteDao(database: AppDatabase) = database.noteDao()
 }

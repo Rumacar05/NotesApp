@@ -1,18 +1,26 @@
 package com.ruma.notes.data.database.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ruma.notes.data.database.entity.Note
+import com.ruma.notes.data.database.entity.NoteEntity
 
+@Dao
 interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(note: Note)
+    suspend fun insert(note: NoteEntity)
 
     @Delete
-    suspend fun delete(note: Note)
+    suspend fun delete(note: NoteEntity)
+
+    @Query("SELECT * FROM notes WHERE id = :noteId")
+    suspend fun getNoteById(noteId: Long): NoteEntity?
+
+    @Query("SELECT * FROM notes WHERE folderId IS NULL")
+    suspend fun getRootNotes() : List<NoteEntity>
 
     @Query("SELECT * FROM notes WHERE folderId = :folderId")
-    suspend fun getNotesByFolder(folderId: Long): List<Note>
+    suspend fun getNotesByFolderId(folderId: Long): List<NoteEntity>
 }
