@@ -4,7 +4,7 @@ import com.ruma.notes.data.database.dao.NoteDao
 import com.ruma.notes.data.database.entities.NoteEntity
 import javax.inject.Inject
 
-class NoteRepository @Inject constructor(private val noteDao: NoteDao) {
+class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao) {
     suspend fun getRootNotes(): List<NoteEntity> = noteDao.getRootNotes()
 
     suspend fun getNotesByFolderId(folderId: Long): List<NoteEntity> =

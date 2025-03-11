@@ -4,7 +4,7 @@ import com.ruma.notes.data.database.dao.FolderDao
 import com.ruma.notes.data.database.entities.FolderEntity
 import javax.inject.Inject
 
-class FolderRepository @Inject constructor(private val folderDao: FolderDao) {
+class FolderRepositoryImpl @Inject constructor(private val folderDao: FolderDao) {
     suspend fun getRootFolders(): List<FolderEntity> = folderDao.getRootFolders()
     suspend fun getFolderById(folderId: Long): FolderEntity? = folderDao.getFolderById(folderId)
     suspend fun getFoldersByParentId(parentFolderId: Long): List<FolderEntity> =

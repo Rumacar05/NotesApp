@@ -2,10 +2,10 @@ package com.ruma.notes.ui.folder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.repositories.NoteRepository
+import com.ruma.notes.data.repositories.NoteRepositoryImpl
 import com.ruma.notes.data.database.entities.FolderEntity
 import com.ruma.notes.data.database.entities.NoteEntity
-import com.ruma.notes.data.repositories.FolderRepository
+import com.ruma.notes.data.repositories.FolderRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderContentViewModel @Inject constructor(
-    private val folderRepository: FolderRepository,
-    private val noteRepository: NoteRepository
+    private val folderRepository: FolderRepositoryImpl,
+    private val noteRepository: NoteRepositoryImpl
 ) :
     ViewModel() {
     private var _currentFolder = MutableStateFlow<FolderEntity?>(null)

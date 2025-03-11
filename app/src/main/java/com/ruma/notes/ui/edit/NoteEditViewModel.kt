@@ -2,7 +2,7 @@ package com.ruma.notes.ui.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.repositories.NoteRepository
+import com.ruma.notes.data.repositories.NoteRepositoryImpl
 import com.ruma.notes.data.database.entities.NoteEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NoteEditViewModel @Inject constructor(private val repository: NoteRepository) : ViewModel() {
+class NoteEditViewModel @Inject constructor(private val repository: NoteRepositoryImpl) : ViewModel() {
     private val _note = MutableStateFlow<NoteEntity?>(null)
     val note: StateFlow<NoteEntity?> = _note
 
