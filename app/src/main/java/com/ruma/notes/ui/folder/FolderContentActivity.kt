@@ -35,11 +35,19 @@ class FolderContentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFolderContentBinding
     private var folderId: Long = 0L
+    private var isFolderDeleted = false
 
     private lateinit var noteAdapter: NoteAdapter
     private lateinit var folderAdapter: FolderAdapter
 
     private val viewModel: FolderContentViewModel by viewModels()
+    private val handler = Handler(Looper.getMainLooper())
+    private val delayMillis = 1000L
+    private val saveRunnable = Runnable {
+        if (!isFolderDeleted) {
+            viewModel.updateFolder(binding.etFolderName.text.toString())
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +67,13 @@ class FolderContentActivity : AppCompatActivity() {
         }
 
         initUI()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (!isFolderDeleted) {
+            viewModel.updateFolder(binding.etFolderName.text.toString())
+        }
     }
 
     private fun initUI() {
@@ -120,14 +135,9 @@ class FolderContentActivity : AppCompatActivity() {
 
         binding.ivOptions.setOnClickListener { view -> showPopUpMenu(view) }
 
-        val handler = Handler(Looper.getMainLooper())
-        val delayMillis = 1000L
-
-        binding.etFolderName.addTextChangedListener(afterTextChanged = { s ->
-            handler.removeCallbacksAndMessages(null)
-            handler.postDelayed({
-                viewModel.updateFolder(s.toString())
-            }, delayMillis)
+        binding.etFolderName.addTextChangedListener(afterTextChanged = { _ ->
+            handler.removeCallbacks(saveRunnable)
+            handler.postDelayed(saveRunnable, delayMillis)
         })
     }
 
@@ -175,6 +185,7 @@ class FolderContentActivity : AppCompatActivity() {
             .setMessage("¿Estas seguro de borrar la carpeta ${binding.etFolderName.text}?")
             .setNeutralButton("Borrar") { _, _ ->
                 viewModel.deleteFolder()
+                isFolderDeleted = true
                 finish()
                 Toast.makeText(this, "Se ha borrado la carpeta correctamente", Toast.LENGTH_SHORT)
                     .show()

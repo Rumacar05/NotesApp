@@ -2,10 +2,10 @@ package com.ruma.notes.ui.folder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.repositories.NoteRepositoryImpl
 import com.ruma.notes.data.database.entities.FolderEntity
 import com.ruma.notes.data.database.entities.NoteEntity
 import com.ruma.notes.data.repositories.FolderRepositoryImpl
+import com.ruma.notes.data.repositories.NoteRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

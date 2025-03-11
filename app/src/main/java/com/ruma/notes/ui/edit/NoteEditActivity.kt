@@ -1,7 +1,8 @@
 package com.ruma.notes.ui.edit
 
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -11,10 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
-import com.ruma.notes.ui.home.MainActivity
 import com.ruma.notes.R
 import com.ruma.notes.databinding.ActivityNoteEditBinding
+import com.ruma.notes.ui.home.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -24,8 +26,19 @@ class NoteEditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteEditBinding
     private var currentId: Long = 0
     private var parentId: Long? = null
+    private var isNoteDeleted = false
 
     private val viewModel: NoteEditViewModel by viewModels()
+    private val handler = Handler(Looper.getMainLooper())
+    private val delayMillis = 2000L
+    private val saveRunnable = Runnable {
+        if(!isNoteDeleted) {
+            viewModel.saveNote(
+                binding.etTitle.text.toString(),
+                binding.etContent.text.toString()
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,22 +57,41 @@ class NoteEditActivity : AppCompatActivity() {
         initUI()
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (!isNoteDeleted) {
+            viewModel.saveNote(
+                binding.etTitle.text.toString(),
+                binding.etContent.text.toString()
+            )
+        }
+    }
+
     private fun initUI() {
+        initUIListener()
         initListeners()
 
         if (currentId != 0L) {
             viewModel.loadNoteByID(currentId)
         }
-        observeViewModel()
     }
 
     private fun initListeners() {
         binding.ivGoBack.setOnClickListener { finish() }
         binding.ivOptions.setOnClickListener { view -> showPopUpMenu(view) }
-        binding.btnSave.setOnClickListener { saveNote() }
+
+        binding.etTitle.addTextChangedListener(afterTextChanged = { _ ->
+            handler.removeCallbacks(saveRunnable)
+            handler.postDelayed(saveRunnable, delayMillis)
+        })
+
+        binding.etContent.addTextChangedListener(afterTextChanged = { _ ->
+            handler.removeCallbacks(saveRunnable)
+            handler.postDelayed(saveRunnable, delayMillis)
+        })
     }
 
-    private fun observeViewModel() {
+    private fun initUIListener() {
         lifecycleScope.launch {
             viewModel.note.collect { note ->
                 if (note != null) {
@@ -67,18 +99,6 @@ class NoteEditActivity : AppCompatActivity() {
                     binding.etContent.setText(note.content)
                 }
             }
-        }
-    }
-
-    private fun saveNote() {
-        val title = binding.etTitle.text.toString()
-        val content = binding.etContent.text.toString()
-
-        if (title.isNotEmpty() || content.isNotEmpty()) {
-            viewModel.saveNote(title, content, parentId)
-            Toast.makeText(this, "Nota guardada", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Tienes que poner titulo o contenido", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -107,6 +127,7 @@ class NoteEditActivity : AppCompatActivity() {
             .setMessage("¿Estas seguro de borrar la nota ${binding.etTitle.text}?")
             .setNeutralButton("Borrar") { _, _ ->
                 viewModel.deleteNote()
+                isNoteDeleted = true
                 finish()
                 Toast.makeText(this, "Se ha borrado la nota correctamente", Toast.LENGTH_SHORT)
                     .show()

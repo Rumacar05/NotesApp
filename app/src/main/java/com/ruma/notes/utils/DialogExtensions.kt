@@ -14,7 +14,7 @@ fun AppCompatActivity.showCreateFolderDialog(createFolder: (String) -> Unit) {
     val dialog = AlertDialog.Builder(this)
         .setTitle("Crear carpeta")
         .setView(dialogView)
-        .setNeutralButton("Crear") { dialog, which ->
+        .setNeutralButton("Crear") { _, _ ->
             val folderName = etFolderName.text.toString()
 
             if (folderName.isNotEmpty()) {
