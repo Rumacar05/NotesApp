@@ -12,9 +12,9 @@ fun AppCompatActivity.showCreateFolderDialog(createFolder: (String) -> Unit) {
     val etFolderName = dialogView.findViewById<EditText>(R.id.etFolderName)
 
     val dialog = AlertDialog.Builder(this)
-        .setTitle("Crear carpeta")
+        .setTitle(getString(R.string.create_folder))
         .setView(dialogView)
-        .setNeutralButton("Crear") { _, _ ->
+        .setNeutralButton(getString(R.string.create)) { _, _ ->
             val folderName = etFolderName.text.toString()
 
             if (folderName.isNotEmpty()) {
@@ -22,12 +22,12 @@ fun AppCompatActivity.showCreateFolderDialog(createFolder: (String) -> Unit) {
             } else {
                 Toast.makeText(
                     this,
-                    "El nombre de la carpeta no puede estar vacío",
+                    getString(R.string.folder_name_cannot_be_empty),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
-        .setPositiveButton("Cancelar", null)
+        .setPositiveButton(getString(R.string.cancel), null)
         .create()
     dialog.show()
 }

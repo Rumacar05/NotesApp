@@ -1,17 +1,30 @@
 <resources>
     <string name="app_name">Notas</string>
 
-    <string name="folders">Carpetas</string>
+    <!-- General -->
     <string name="title">Título</string>
-    <string name="add_new_note">Añadir nota</string>
     <string name="options">Opciones</string>
-    <string name="delete">Eliminar</string>
-    <string name="create_folder">Crear carpeta</string>
-    <string name="go_back">Ir atras</string>
     <string name="save">Guardar</string>
-    <string name="delete_folder">Eliminar carpeta</string>
-    <string name="folder_name">Nombre de la carpeta</string>
-    <string name="new_folder">Nueva carpeta</string>
-    <string name="folder">Carpeta</string>
+    <string name="create">Crear</string>
+    <string name="cancel">Cancelar</string>
+    <string name="go_back">Ir atras</string>
+    <string name="delete">Eliminar</string>
+    <string name="confirmation">Confirmación</string>
 
+    <!-- Notes -->
+    <string name="add_new_note">Añadir nota</string>
+    <string name="default_note_name">Nota %s</string>
+    <string name="confirm_delete_note">¿Estas seguro de borrar la nota %s?</string>
+    <string name="note_delete_successful">Se ha borrado la nota correctamente</string>
+
+    <!-- Folders -->
+    <string name="folders">Carpetas</string>
+    <string name="folder">Carpeta</string>
+    <string name="new_folder">Nueva carpeta</string>
+    <string name="folder_name">Nombre de la carpeta</string>
+    <string name="create_folder">Crear carpeta</string>
+    <string name="folder_name_cannot_be_empty">El nombre de la carpeta no puede estar vacío</string>
+    <string name="confirm_delete_folder">¿Estas seguro de borrar la carpeta %s?</string>
+    <string name="folder_delete_successful">Se ha borrado la carpeta correctamente</string>
+    <string name="folder_created">Carpeta creada: %s</string>
 </resources>

@@ -2,6 +2,7 @@ package com.ruma.notes.ui.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.ruma.notes.R
 import com.ruma.notes.databinding.ItemNoteBinding
 import com.ruma.notes.domain.model.Note
 import java.text.SimpleDateFormat
@@ -16,7 +17,10 @@ class NoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if (note.title.isNotEmpty()) {
             binding.tvTitle.text = note.title
         } else {
-            binding.tvTitle.text = "Nota ${formatTimestamp(note.timestamp)}"
+            binding.tvTitle.text = binding.tvTitle.context.getString(
+                R.string.default_note_name,
+                formatTimestamp(note.timestamp)
+            )
         }
         binding.tvContent.text = note.content
 

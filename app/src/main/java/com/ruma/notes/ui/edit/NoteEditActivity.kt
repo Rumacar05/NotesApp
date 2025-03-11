@@ -111,16 +111,16 @@ class NoteEditActivity : AppCompatActivity() {
 
     private fun showDeleteNoteDialog() {
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Confirmación")
-            .setMessage("¿Estas seguro de borrar la nota ${binding.etTitle.text}?")
-            .setNeutralButton("Borrar") { _, _ ->
+            .setTitle(getString(R.string.confirmation))
+            .setMessage(getString(R.string.confirm_delete_note, binding.etTitle.text))
+            .setNeutralButton(getString(R.string.delete)) { _, _ ->
                 viewModel.deleteNote()
                 isNoteDeleted = true
                 finish()
-                Toast.makeText(this, "Se ha borrado la nota correctamente", Toast.LENGTH_SHORT)
+                Toast.makeText(this, getString(R.string.note_delete_successful), Toast.LENGTH_SHORT)
                     .show()
             }
-            .setPositiveButton("Cancelar", null)
+            .setPositiveButton(R.string.cancel, null)
 
         dialog.show()
     }

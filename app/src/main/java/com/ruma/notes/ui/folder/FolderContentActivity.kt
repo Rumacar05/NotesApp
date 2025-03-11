@@ -180,22 +180,26 @@ class FolderContentActivity : AppCompatActivity() {
 
     private fun showDeleteFolderDialog() {
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Confirmación")
-            .setMessage("¿Estas seguro de borrar la carpeta ${binding.etFolderName.text}?")
-            .setNeutralButton("Borrar") { _, _ ->
+            .setTitle(getString(R.string.confirmation))
+            .setMessage(getString(R.string.confirm_delete_folder, binding.etFolderName.text))
+            .setNeutralButton(getString(R.string.delete)) { _, _ ->
                 viewModel.deleteFolder()
                 isFolderDeleted = true
                 finish()
-                Toast.makeText(this, "Se ha borrado la carpeta correctamente", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.folder_delete_successful),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            .setPositiveButton("Cancelar", null)
+            .setPositiveButton(getString(R.string.cancel), null)
 
         dialog.show()
     }
 
     private fun createFolder(folderName: String) {
         viewModel.insertFolder(folderName, folderId)
-        Toast.makeText(this, "Carpeta creada: $folderName", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.folder_created, folderName), Toast.LENGTH_SHORT)
+            .show()
     }
 }
