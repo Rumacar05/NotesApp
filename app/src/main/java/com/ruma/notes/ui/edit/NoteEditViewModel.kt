@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ruma.notes.domain.model.Note
 import com.ruma.notes.domain.repositories.NoteRepository
+import com.ruma.notes.domain.usecase.SaveNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NoteEditViewModel @Inject constructor(private val repository: NoteRepository) :
+class NoteEditViewModel @Inject constructor(
+    private val repository: NoteRepository,
+    private val saveNoteUseCase: SaveNoteUseCase
+) :
     ViewModel() {
     private val _note = MutableStateFlow<Note?>(null)
     val note: StateFlow<Note?> = _note
@@ -24,21 +28,9 @@ class NoteEditViewModel @Inject constructor(private val repository: NoteReposito
 
     fun saveNote(title: String, content: String, folderId: Long? = null) {
         viewModelScope.launch {
-            val currentNote = _note.value
-
-            if (currentNote != null) {
-                repository.updateNote(currentNote.copy(title = title, content = content))
-            } else {
-                if (title.isNotEmpty() || content.isNotEmpty()) {
-                    val newNote = Note(
-                        title = title,
-                        content = content,
-                        folderId = folderId,
-                        timestamp = System.currentTimeMillis()
-                    )
-                    repository.insertNote(newNote)
-                    _note.value = newNote
-                }
+            val savedNote = saveNoteUseCase(_note.value, title, content, folderId)
+            if (savedNote != null) {
+                _note.value = savedNote
             }
         }
     }
