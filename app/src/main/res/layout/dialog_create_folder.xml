@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:hint="@string/folder_name"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textColor="@color/secondary" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

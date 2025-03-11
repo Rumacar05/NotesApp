@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="blue_primary">#2A7FBA</color>
-    <color name="secondary">#F5F7FA</color>
+    <color name="secondary">#FF000000</color>
     <color name="blue_secondary">#93C5EF</color>
     <color name="primary_icon">#FF000000</color>
     <color name="black">#FF000000</color>

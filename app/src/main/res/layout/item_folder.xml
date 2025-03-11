@@ -22,12 +22,13 @@
             android:gravity="center"
             android:maxHeight="80dp"
             android:minHeight="40dp"
-            android:padding="6dp">
+            android:padding="4dp">
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/secondary"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="Title" />
