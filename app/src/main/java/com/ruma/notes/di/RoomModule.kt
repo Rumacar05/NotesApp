@@ -2,7 +2,11 @@ package com.ruma.notes.di
 
 import android.content.Context
 import androidx.room.Room
+import com.ruma.notes.data.database.dao.FolderDao
+import com.ruma.notes.data.database.dao.NoteDao
 import com.ruma.notes.data.database.db.AppDatabase
+import com.ruma.notes.data.repositories.FolderRepository
+import com.ruma.notes.data.repositories.NoteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +37,12 @@ object RoomModule {
     @Provides
     @Singleton
     fun providesNoteDao(database: AppDatabase) = database.noteDao()
+
+    @Provides
+    @Singleton
+    fun provideFolderRepository(folderDao: FolderDao) = FolderRepository(folderDao)
+
+    @Provides
+    @Singleton
+    fun provideNoteRepository(noteDao: NoteDao) = NoteRepository(noteDao)
 }

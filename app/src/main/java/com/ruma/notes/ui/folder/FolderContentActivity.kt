@@ -4,10 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -22,15 +19,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entity.FolderEntity
+import com.ruma.notes.data.database.entities.FolderEntity
 import com.ruma.notes.databinding.ActivityFolderContentBinding
 import com.ruma.notes.ui.adapter.FolderAdapter
 import com.ruma.notes.ui.adapter.NoteAdapter
 import com.ruma.notes.ui.edit.NoteEditActivity
-import com.ruma.notes.ui.home.MainActivity
 import com.ruma.notes.ui.home.MainActivity.Companion.FOLDER_ID
 import com.ruma.notes.ui.home.MainActivity.Companion.NOTE_ID
-import com.ruma.notes.ui.home.MainViewModel
 import com.ruma.notes.utils.showCreateFolderDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -2,16 +2,20 @@ package com.ruma.notes.ui.folder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.database.NotesRepository
-import com.ruma.notes.data.database.entity.FolderEntity
-import com.ruma.notes.data.database.entity.NoteEntity
+import com.ruma.notes.data.repositories.NoteRepository
+import com.ruma.notes.data.database.entities.FolderEntity
+import com.ruma.notes.data.database.entities.NoteEntity
+import com.ruma.notes.data.repositories.FolderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FolderContentViewModel @Inject constructor(private val repository: NotesRepository) :
+class FolderContentViewModel @Inject constructor(
+    private val folderRepository: FolderRepository,
+    private val noteRepository: NoteRepository
+) :
     ViewModel() {
     private var _currentFolder = MutableStateFlow<FolderEntity?>(null)
     val currentFolder = _currentFolder
@@ -24,15 +28,15 @@ class FolderContentViewModel @Inject constructor(private val repository: NotesRe
 
     fun loadFolder(folderId: Long) {
         viewModelScope.launch {
-            _currentFolder.value = repository.getFolderById(folderId)
-            _folders.value = repository.getFoldersByParentId(folderId)
-            _notes.value = repository.getNotesByFolderId(folderId)
+            _currentFolder.value = folderRepository.getFolderById(folderId)
+            _folders.value = folderRepository.getFoldersByParentId(folderId)
+            _notes.value = noteRepository.getNotesByFolderId(folderId)
         }
     }
 
     fun insertFolder(folder: FolderEntity) {
         viewModelScope.launch {
-            repository.insertFolder(folder)
+            folderRepository.insertFolder(folder)
             folder.parentFolderId?.let { loadFolder(it) }
         }
     }
@@ -42,7 +46,7 @@ class FolderContentViewModel @Inject constructor(private val repository: NotesRe
             val folder = _currentFolder.value
             if (folder != null && folder.name != folderName) {
                 val updateFolder = folder.copy(name = folderName)
-                repository.updateFolder(updateFolder)
+                folderRepository.updateFolder(updateFolder)
             }
         }
     }
@@ -51,7 +55,7 @@ class FolderContentViewModel @Inject constructor(private val repository: NotesRe
         viewModelScope.launch {
             val folder = _currentFolder.value
             if (folder != null) {
-                repository.deleteFolder(folder)
+                folderRepository.deleteFolder(folder)
             }
         }
     }

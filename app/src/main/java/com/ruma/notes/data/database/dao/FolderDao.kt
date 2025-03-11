@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.ruma.notes.data.database.entity.FolderEntity
+import com.ruma.notes.data.database.entities.FolderEntity
 
 @Dao
 interface FolderDao {

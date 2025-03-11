@@ -2,10 +2,9 @@ package com.ruma.notes.ui.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.ruma.notes.data.database.entity.NoteEntity
+import com.ruma.notes.data.database.entities.NoteEntity
 import com.ruma.notes.databinding.ItemNoteBinding
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.util.Date
 import java.util.Locale
 

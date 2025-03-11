@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ruma.notes.data.database.entity.NoteEntity
+import com.ruma.notes.data.database.entities.NoteEntity
 
 @Dao
 interface NoteDao {

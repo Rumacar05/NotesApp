@@ -2,14 +2,10 @@ package com.ruma.notes.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.ViewCompat
@@ -19,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entity.FolderEntity
+import com.ruma.notes.data.database.entities.FolderEntity
 import com.ruma.notes.databinding.ActivityMainBinding
 import com.ruma.notes.ui.edit.NoteEditActivity
 import com.ruma.notes.ui.adapter.FolderAdapter

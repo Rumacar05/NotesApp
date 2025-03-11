@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entity.FolderEntity
+import com.ruma.notes.data.database.entities.FolderEntity
 
 class FolderAdapter(
     private var folderList: List<FolderEntity> = emptyList(),
