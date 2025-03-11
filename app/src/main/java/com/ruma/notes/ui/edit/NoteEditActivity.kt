@@ -31,14 +31,7 @@ class NoteEditActivity : AppCompatActivity() {
     private val viewModel: NoteEditViewModel by viewModels()
     private val handler = Handler(Looper.getMainLooper())
     private val delayMillis = 2000L
-    private val saveRunnable = Runnable {
-        if(!isNoteDeleted) {
-            viewModel.saveNote(
-                binding.etTitle.text.toString(),
-                binding.etContent.text.toString()
-            )
-        }
-    }
+    private val saveRunnable = Runnable { saveNote() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,12 +52,7 @@ class NoteEditActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (!isNoteDeleted) {
-            viewModel.saveNote(
-                binding.etTitle.text.toString(),
-                binding.etContent.text.toString()
-            )
-        }
+        saveNote()
     }
 
     private fun initUI() {
@@ -135,5 +123,23 @@ class NoteEditActivity : AppCompatActivity() {
             .setPositiveButton("Cancelar", null)
 
         dialog.show()
+    }
+
+    private fun saveNote() {
+        val title = binding.etTitle.text.toString()
+        val content = binding.etContent.text.toString()
+
+        if (!isNoteDeleted) {
+            viewModel.saveNote(
+                title,
+                content,
+                parentId
+            )
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(saveRunnable)
     }
 }

@@ -12,5 +12,6 @@ class NoteRepositoryImpl @Inject constructor(private val noteDao: NoteDao) {
 
     suspend fun getNoteById(noteId: Long) = noteDao.getNoteById(noteId)
     suspend fun insertNote(note: NoteEntity) = noteDao.insert(note)
+    suspend fun updateNote(note: NoteEntity) = noteDao.update(note)
     suspend fun deleteNote(note: NoteEntity) = noteDao.delete(note)
 }

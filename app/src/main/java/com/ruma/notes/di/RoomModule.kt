@@ -18,7 +18,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
-    private const val NOTES_DATABASE_NAME = "notes_db"
+    private const val NOTES_DATABASE_NAME = "notes_database"
 
     @Provides
     @Singleton

@@ -2,8 +2,8 @@ package com.ruma.notes.ui.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.repositories.NoteRepositoryImpl
 import com.ruma.notes.data.database.entities.NoteEntity
+import com.ruma.notes.data.repositories.NoteRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +11,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NoteEditViewModel @Inject constructor(private val repository: NoteRepositoryImpl) : ViewModel() {
+class NoteEditViewModel @Inject constructor(private val repository: NoteRepositoryImpl) :
+    ViewModel() {
     private val _note = MutableStateFlow<NoteEntity?>(null)
     val note: StateFlow<NoteEntity?> = _note
 
@@ -24,15 +25,21 @@ class NoteEditViewModel @Inject constructor(private val repository: NoteReposito
     fun saveNote(title: String, content: String, folderId: Long? = null) {
         viewModelScope.launch {
             val currentNote = _note.value
-            val note = currentNote?.copy(title = title, content = content)
-                ?: NoteEntity(
-                    title = title,
-                    content = content,
-                    folderId = folderId,
-                    timestamp = System.currentTimeMillis()
-                )
 
-            repository.insertNote(note)
+            if (currentNote != null) {
+                repository.updateNote(currentNote.copy(title = title, content = content))
+            } else {
+                if (title.isNotEmpty() || content.isNotEmpty()) {
+                    val newNote = NoteEntity(
+                        title = title,
+                        content = content,
+                        folderId = folderId,
+                        timestamp = System.currentTimeMillis()
+                    )
+                    repository.insertNote(newNote)
+                    _note.value = newNote
+                }
+            }
         }
     }
 
