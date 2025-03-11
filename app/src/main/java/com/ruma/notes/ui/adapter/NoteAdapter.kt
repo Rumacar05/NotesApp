@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entities.NoteEntity
+import com.ruma.notes.domain.model.Note
 
 class NoteAdapter(
-    private var noteList: List<NoteEntity> = emptyList(),
+    private var noteList: List<Note> = emptyList(),
     private val onItemSelected: (Long) -> Unit
 ) :
     RecyclerView.Adapter<NoteViewHolder>() {
 
-    fun updateList(list: List<NoteEntity>) {
+    fun updateList(list: List<Note>) {
         noteList = list
         notifyDataSetChanged()
     }

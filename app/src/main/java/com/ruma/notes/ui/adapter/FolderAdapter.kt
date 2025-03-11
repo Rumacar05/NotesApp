@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entities.FolderEntity
+import com.ruma.notes.domain.model.Folder
 
 class FolderAdapter(
-    private var folderList: List<FolderEntity> = emptyList(),
+    private var folderList: List<Folder> = emptyList(),
     private val onItemSelected: (Long) -> Unit
 ) :
     RecyclerView.Adapter<FolderViewHolder>() {
 
-    fun updateList(list: List<FolderEntity>) {
+    fun updateList(list: List<Folder>) {
         folderList = list
         notifyDataSetChanged()
     }

@@ -2,10 +2,10 @@ package com.ruma.notes.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.repositories.NoteRepositoryImpl
-import com.ruma.notes.data.database.entities.FolderEntity
-import com.ruma.notes.data.database.entities.NoteEntity
-import com.ruma.notes.data.repositories.FolderRepositoryImpl
+import com.ruma.notes.domain.model.Folder
+import com.ruma.notes.domain.model.Note
+import com.ruma.notes.domain.repositories.FolderRepository
+import com.ruma.notes.domain.repositories.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,14 +14,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val folderRepository: FolderRepositoryImpl,
-    private val noteRepository: NoteRepositoryImpl
+    private val folderRepository: FolderRepository,
+    private val noteRepository: NoteRepository
 ) : ViewModel() {
-    private var _folders = MutableStateFlow<List<FolderEntity>>(emptyList())
-    val folders: StateFlow<List<FolderEntity>> = _folders
+    private var _folders = MutableStateFlow<List<Folder>>(emptyList())
+    val folders: StateFlow<List<Folder>> = _folders
 
-    private var _notes = MutableStateFlow<List<NoteEntity>>(emptyList())
-    val notes: StateFlow<List<NoteEntity>> = _notes
+    private var _notes = MutableStateFlow<List<Note>>(emptyList())
+    val notes: StateFlow<List<Note>> = _notes
 
     init {
         loadNotesAndFolders()
@@ -34,9 +34,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun insertFolder(folder: FolderEntity) {
+    fun insertFolder(folderName: String) {
         viewModelScope.launch {
-            folderRepository.insertFolder(folder)
+            folderRepository.insertFolder(
+                Folder(name = folderName, parentFolderId = null)
+            )
             loadNotesAndFolders()
         }
     }

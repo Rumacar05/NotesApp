@@ -15,11 +15,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ruma.notes.R
-import com.ruma.notes.data.database.entities.FolderEntity
 import com.ruma.notes.databinding.ActivityMainBinding
-import com.ruma.notes.ui.edit.NoteEditActivity
 import com.ruma.notes.ui.adapter.FolderAdapter
 import com.ruma.notes.ui.adapter.NoteAdapter
+import com.ruma.notes.ui.edit.NoteEditActivity
 import com.ruma.notes.ui.folder.FolderContentActivity
 import com.ruma.notes.utils.showCreateFolderDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -123,8 +122,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createFolder(folderName: String) {
-        val folder = FolderEntity(name = folderName, parentFolderId = null)
-        viewModel.insertFolder(folder)
+        viewModel.insertFolder(folderName)
         Toast.makeText(this, "Carpeta creada: $folderName", Toast.LENGTH_SHORT).show()
     }
 

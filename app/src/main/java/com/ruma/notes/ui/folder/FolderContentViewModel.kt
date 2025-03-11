@@ -2,10 +2,10 @@ package com.ruma.notes.ui.folder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.database.entities.FolderEntity
-import com.ruma.notes.data.database.entities.NoteEntity
-import com.ruma.notes.data.repositories.FolderRepositoryImpl
-import com.ruma.notes.data.repositories.NoteRepositoryImpl
+import com.ruma.notes.domain.model.Folder
+import com.ruma.notes.domain.model.Note
+import com.ruma.notes.domain.repositories.FolderRepository
+import com.ruma.notes.domain.repositories.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -13,17 +13,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderContentViewModel @Inject constructor(
-    private val folderRepository: FolderRepositoryImpl,
-    private val noteRepository: NoteRepositoryImpl
+    private val folderRepository: FolderRepository,
+    private val noteRepository: NoteRepository
 ) :
     ViewModel() {
-    private var _currentFolder = MutableStateFlow<FolderEntity?>(null)
+    private var _currentFolder = MutableStateFlow<Folder?>(null)
     val currentFolder = _currentFolder
 
-    private var _folders = MutableStateFlow<List<FolderEntity>>(emptyList())
+    private var _folders = MutableStateFlow<List<Folder>>(emptyList())
     val folder = _folders
 
-    private var _notes = MutableStateFlow<List<NoteEntity>>(emptyList())
+    private var _notes = MutableStateFlow<List<Note>>(emptyList())
     val notes = _notes
 
     fun loadFolder(folderId: Long) {
@@ -34,8 +34,9 @@ class FolderContentViewModel @Inject constructor(
         }
     }
 
-    fun insertFolder(folder: FolderEntity) {
+    fun insertFolder(folderName: String, parentFolderId: Long?) {
         viewModelScope.launch {
+            val folder = Folder(name = folderName, parentFolderId = parentFolderId)
             folderRepository.insertFolder(folder)
             folder.parentFolderId?.let { loadFolder(it) }
         }

@@ -2,8 +2,8 @@ package com.ruma.notes.ui.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruma.notes.data.database.entities.NoteEntity
-import com.ruma.notes.data.repositories.NoteRepositoryImpl
+import com.ruma.notes.domain.model.Note
+import com.ruma.notes.domain.repositories.NoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,10 +11,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NoteEditViewModel @Inject constructor(private val repository: NoteRepositoryImpl) :
+class NoteEditViewModel @Inject constructor(private val repository: NoteRepository) :
     ViewModel() {
-    private val _note = MutableStateFlow<NoteEntity?>(null)
-    val note: StateFlow<NoteEntity?> = _note
+    private val _note = MutableStateFlow<Note?>(null)
+    val note: StateFlow<Note?> = _note
 
     fun loadNoteByID(noteId: Long) {
         viewModelScope.launch {
@@ -30,7 +30,7 @@ class NoteEditViewModel @Inject constructor(private val repository: NoteReposito
                 repository.updateNote(currentNote.copy(title = title, content = content))
             } else {
                 if (title.isNotEmpty() || content.isNotEmpty()) {
-                    val newNote = NoteEntity(
+                    val newNote = Note(
                         title = title,
                         content = content,
                         folderId = folderId,

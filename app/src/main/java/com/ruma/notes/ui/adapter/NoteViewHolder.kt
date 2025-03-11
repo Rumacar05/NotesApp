@@ -2,8 +2,8 @@ package com.ruma.notes.ui.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.ruma.notes.data.database.entities.NoteEntity
 import com.ruma.notes.databinding.ItemNoteBinding
+import com.ruma.notes.domain.model.Note
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -12,7 +12,7 @@ class NoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ItemNoteBinding.bind(view)
 
-    fun render(note: NoteEntity, onItemSelected: (Long) -> Unit) {
+    fun render(note: Note, onItemSelected: (Long) -> Unit) {
         if (note.title.isNotEmpty()) {
             binding.tvTitle.text = note.title
         } else {
