@@ -2,8 +2,8 @@
 <resources>
     <color name="blue_primary">#2A7FBA</color>
     <color name="secondary">#F5F7FA</color>
-    <color name="blue_secondary">#93C5EF</color>
-    <color name="primary_icon">#FF000000</color>
+    <color name="blue_secondary">#5A86B0</color>
+    <color name="primary_icon">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

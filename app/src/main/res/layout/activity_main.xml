@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:contentDescription="@string/options"
-            android:src="@drawable/ic_more_vert" />
+            android:src="@drawable/ic_more_vert"
+            app:tint="@color/primary_icon" />
 
     </FrameLayout>
 
@@ -60,7 +61,9 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/add_new_note"
         android:src="@drawable/ic_add_note"
+        app:backgroundTint="@color/blue_secondary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/primary_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
