@@ -25,6 +25,7 @@ import com.ruma.notes.ui.edit.NoteEditActivity
 import com.ruma.notes.ui.adapter.FolderAdapter
 import com.ruma.notes.ui.adapter.NoteAdapter
 import com.ruma.notes.ui.folder.FolderContentActivity
+import com.ruma.notes.utils.showCreateFolderDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -114,39 +115,15 @@ class MainActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_create_folder -> {
-                    showCreateFolderDialog()
+                    showCreateFolderDialog { folderName -> createFolder(folderName) }
                     true
                 }
+
                 else -> false
             }
         }
 
         popupMenu.show()
-    }
-
-    private fun showCreateFolderDialog() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_folder, null)
-        val etFolderName = dialogView.findViewById<EditText>(R.id.etFolderName)
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Crear carpeta")
-            .setView(dialogView)
-            .setNeutralButton("Crear") { dialog, which ->
-                val folderName = etFolderName.text.toString()
-
-                if (folderName.isNotEmpty()) {
-                    createFolder(folderName)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "El nombre de la carpeta no puede estar vacío",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            .setPositiveButton("Cancelar", null)
-            .create()
-        dialog.show()
     }
 
     private fun createFolder(folderName: String) {

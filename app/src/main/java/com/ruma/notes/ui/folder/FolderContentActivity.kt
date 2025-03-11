@@ -31,6 +31,7 @@ import com.ruma.notes.ui.home.MainActivity
 import com.ruma.notes.ui.home.MainActivity.Companion.FOLDER_ID
 import com.ruma.notes.ui.home.MainActivity.Companion.NOTE_ID
 import com.ruma.notes.ui.home.MainViewModel
+import com.ruma.notes.utils.showCreateFolderDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -127,7 +128,7 @@ class FolderContentActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         val delayMillis = 1000L
 
-        binding.etFolderName.addTextChangedListener (afterTextChanged = {s ->
+        binding.etFolderName.addTextChangedListener(afterTextChanged = { s ->
             handler.removeCallbacksAndMessages(null)
             handler.postDelayed({
                 viewModel.updateFolder(s.toString())
@@ -157,7 +158,7 @@ class FolderContentActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_create_folder -> {
-                    showCreateFolderDialog()
+                    showCreateFolderDialog { folderName -> createFolder(folderName) }
                     true
                 }
 
@@ -171,31 +172,6 @@ class FolderContentActivity : AppCompatActivity() {
         }
 
         popupMenu.show()
-    }
-
-    private fun showCreateFolderDialog() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_folder, null)
-        val etFolderName = dialogView.findViewById<EditText>(R.id.etFolderName)
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Crear carpeta")
-            .setView(dialogView)
-            .setNeutralButton("Crear") { _, _ ->
-                val folderName = etFolderName.text.toString()
-
-                if (folderName.isNotEmpty()) {
-                    createFolder(folderName)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "El nombre de la carpeta no puede estar vacío",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            .setPositiveButton("Cancelar", null)
-            .create()
-        dialog.show()
     }
 
     private fun showDeleteFolderDialog() {
