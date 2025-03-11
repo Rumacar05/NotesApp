@@ -24,6 +24,7 @@ class SaveNoteUseCase @Inject constructor(private val noteRepository: NoteReposi
                     folderId = folderId,
                     timestamp = System.currentTimeMillis()
                 )
+                noteRepository.insertNote(savedNote)
             }
         }
 

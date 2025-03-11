@@ -24,6 +24,7 @@
     <string name="folder_name">Nombre de la carpeta</string>
     <string name="create_folder">Crear carpeta</string>
     <string name="folder_name_cannot_be_empty">El nombre de la carpeta no puede estar vacío</string>
+    <string name="delete_folder">Eliminar carpeta</string>
     <string name="confirm_delete_folder">¿Estas seguro de borrar la carpeta %s?</string>
     <string name="folder_delete_successful">Se ha borrado la carpeta correctamente</string>
     <string name="folder_created">Carpeta creada: %s</string>
